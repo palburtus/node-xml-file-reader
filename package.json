@@ -4,6 +4,9 @@
   "description": "node project to test reading xml files from the windows and linux file systems",
   "main": "server.js",
   "scripts": {
+    "build": "rimraf  build && tsc",
+    "prestart": "npm run build",
+    "start": "node build/server.js",
     "test": "test"
   },
   "repository": {
@@ -17,6 +20,19 @@
   },
   "homepage": "https://github.com/palburtus/node-xml-file-reader#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "@types/body-parser": "^1.19.0",
+    "@types/express": "^4.17.11",
+    "@types/node": "^14.14.35",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "rimraf": "^3.0.2",
+    "source-map-loader": "^2.0.1",
+    "ts-loader": "^8.0.18"
+  },
+  "devDependencies": {
+    "concurrently": "^6.0.0",
+    "nodemon": "^2.0.7",
+    "typescript": "^4.2.3",
+    "webpack": "^5.26.3"
   }
 }
