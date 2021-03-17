@@ -1,0 +1,22 @@
+{
+  "name": "xml-file-reader",
+  "version": "0.1.0",
+  "description": "node project to test reading xml files from the windows and linux file systems",
+  "main": "server.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/palburtus/node-xml-file-reader.git"
+  },
+  "author": "p. alburtus",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/palburtus/node-xml-file-reader/issues"
+  },
+  "homepage": "https://github.com/palburtus/node-xml-file-reader#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
