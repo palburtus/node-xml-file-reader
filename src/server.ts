@@ -3,12 +3,17 @@ import {BuildService} from './services/buildsService';
 const app = express()
 const port = 3000
 
-app.get('/getbuild', (req, res) => {
+app.get('/api/build', (req, res) => {
 
   let buildService = new BuildService();
-  let buildNumber = buildService.getBuild(7); 
+  
+  buildService.getBuild(9).then((build) =>{
+    res.send(`Build: ${build.number}`);
+  }).catch((error) => {
+    res.send(`Build: ${error}`);
+  });
 
-  res.send(`Build: ${buildNumber}`);
+  
 })
 
 app.listen(port, () => {
