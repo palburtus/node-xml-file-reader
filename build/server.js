@@ -7,10 +7,13 @@ var express_1 = __importDefault(require("express"));
 var buildsService_1 = require("./services/buildsService");
 var app = express_1.default();
 var port = 3000;
-app.get('/getbuild', function (req, res) {
+app.get('/api/build', function (req, res) {
     var buildService = new buildsService_1.BuildService();
-    var buildNumber = buildService.getBuild(7);
-    res.send("Build: " + buildNumber);
+    buildService.getBuild(9).then(function (build) {
+        res.send("Build: " + build.number);
+    }).catch(function (error) {
+        res.send("Build: " + error);
+    });
 });
 app.listen(port, function () {
     console.log("Example app listening at http://localhost:" + port);

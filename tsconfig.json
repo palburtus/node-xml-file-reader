@@ -8,12 +8,14 @@
         "noImplicitReturns": true,
         "noImplicitAny": true,
         "esModuleInterop": true,
-        "typeRoots": [ "./typings" ]
+        "types": ["reflect-metadata", "jest"],
+        "typeRoots": [ "./typings", "./node_modules/@types" ]
     },
     "include": [
-        "./**/*"
+        "./src/**/*.ts",
     ],
     "exclude": [
+        "node_modules",
         "./plugins/**/*",
         "./typings/**/*",
         "./build/**/*" //

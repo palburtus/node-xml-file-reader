@@ -5,7 +5,13 @@ var BuildService = /** @class */ (function () {
     function BuildService() {
     }
     BuildService.prototype.getBuild = function (buildNumber) {
-        return "build " + buildNumber;
+        return new Promise(function (resolve, reject) {
+            var result = {
+                number: buildNumber,
+                version: 1
+            };
+            resolve(result);
+        });
     };
     return BuildService;
 }());
