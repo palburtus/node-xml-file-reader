@@ -1,7 +1,15 @@
-describe("test add function", () => {
+import { BuildService, IBuildService } from "../../services/buildsService";
 
-  it("should return 15 for add(10,5)", () => {
-    expect(15).toBe(15);
+describe("test build service",  () => {
+
+  it("should return build and version number", async () => {
+
+    let buildService:IBuildService = new BuildService();
+    let build = await buildService.getBuild(7);
+
+    expect(build.number).toBe(7);
+    expect(build.version).toBe(1);
+
   });
 
 });

@@ -1,9 +1,13 @@
 import { promises as fsPromises } from 'fs';
 import {Build} from '../model/build';
 
-export class BuildService {
+export interface IBuildService {
+    getBuild(buildNumber: string | number) : Promise<Build>;
+}
+
+export class BuildService implements IBuildService {
     
-    getBuild(buildNumber: string | number) : Promise<Build> {
+    public async getBuild(buildNumber: string | number) : Promise<Build> {
 
         return new Promise<Build>((resolve, reject) => {
 
