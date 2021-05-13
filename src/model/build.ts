@@ -1,4 +1,5 @@
+import { Meta } from "./meta";
+
 export interface Build {
-    number: string | number
-    version: string | number
+    meta: Meta
 }
