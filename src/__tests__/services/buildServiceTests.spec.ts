@@ -10,6 +10,9 @@ describe("test build service",  () => {
     expect(build.meta.number).toBe(7);
     expect(build.meta.version).toBe(1);
 
+    expect(build.testResults.failed).toBe('209');
+    expect(build.testResults.tests).toBe('622');
+
   });
 
 });

@@ -9,10 +9,10 @@ var app = express_1.default();
 var port = 3000;
 app.get('/api/build', function (req, res) {
     var buildService = new buildsService_1.BuildService();
-    buildService.getBuild(9).then(function (build) {
-        res.send("Build: " + build.number);
+    buildService.getBuilds().then(function (build) {
+        res.send("Build: " + build.meta.number);
     }).catch(function (error) {
-        res.send("Build: " + error);
+        res.send("Build read error: " + error);
     });
 });
 app.listen(port, function () {

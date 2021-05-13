@@ -37,18 +37,75 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BuildService = void 0;
+var fs_1 = require("fs");
 var BuildService = /** @class */ (function () {
     function BuildService() {
     }
-    BuildService.prototype.getBuild = function (buildNumber) {
+    BuildService.prototype.getBuilds = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                return [2 /*return*/, new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
+                        var meta, testResult, build, ex_1;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0:
+                                    _a.trys.push([0, 3, , 4]);
+                                    return [4 /*yield*/, this.readMetaJsonFile()];
+                                case 1:
+                                    meta = _a.sent();
+                                    return [4 /*yield*/, this.readTestXmlFile('tests/quick/build/mergedReports/mergedJunitReport_QuickTest.xml')];
+                                case 2:
+                                    testResult = _a.sent();
+                                    build = {
+                                        meta: meta,
+                                        testResults: testResult
+                                    };
+                                    resolve(build);
+                                    return [3 /*break*/, 4];
+                                case 3:
+                                    ex_1 = _a.sent();
+                                    reject(ex_1);
+                                    return [3 /*break*/, 4];
+                                case 4:
+                                    ;
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); })];
+            });
+        });
+    };
+    BuildService.prototype.readTestXmlFile = function (path) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 return [2 /*return*/, new Promise(function (resolve, reject) {
-                        var result = {
-                            number: buildNumber,
-                            version: 1
-                        };
-                        resolve(result);
+                        var file = fs_1.readFile("./" + process.env.BUILDS_ROOT + "/" + path, function (error, data) {
+                            if (error) {
+                                reject(error);
+                            }
+                            var json = data.toString();
+                        });
+                    })];
+            });
+        });
+    };
+    BuildService.prototype.readMetaJsonFile = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, new Promise(function (resolve, reject) {
+                        var file = fs_1.readFile("./" + process.env.BUILDS_ROOT + "/app-platform-major_minor-build/meta.json", function (error, data) {
+                            if (error) {
+                                reject(error);
+                            }
+                            var json = data.toString();
+                            var obj = JSON.parse(json);
+                            var meta = {
+                                number: obj.build,
+                                version: obj.version
+                            };
+                            resolve(meta);
+                        });
                     })];
             });
         });

@@ -1,4 +1,5 @@
 import express from 'express';
+import { Build } from './model/build';
 import {BuildService} from './services/buildsService';
 const app = express()
 const port = 3000
@@ -7,10 +8,10 @@ app.get('/api/build', (req, res) => {
 
   let buildService = new BuildService();
   
-  buildService.getBuild(9).then((build) =>{
-    res.send(`Build: ${build.number}`);
-  }).catch((error) => {
-    res.send(`Build: ${error}`);
+  buildService.getBuilds().then((build: Build) =>{
+    res.send(`Build: ${build.meta.number}`);
+  }).catch((error: any) => {
+    res.send(`Build read error: ${error}`);
   });
 
   

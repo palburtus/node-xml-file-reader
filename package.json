@@ -26,6 +26,7 @@
     "express": "^4.17.1",
     "rimraf": "^3.0.2",
     "source-map-loader": "^2.0.1",
+    "sxml": "^1.0.4",
     "ts-loader": "^8.0.18"
   },
   "devDependencies": {

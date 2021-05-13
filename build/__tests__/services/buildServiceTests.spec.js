@@ -37,18 +37,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var buildsService_1 = require("../../services/buildsService");
-describe("test add function", function () {
-    it("should return 15 for add(10,5)", function () { return __awaiter(void 0, void 0, void 0, function () {
+describe("test build service", function () {
+    it("should return build and version number", function () { return __awaiter(void 0, void 0, void 0, function () {
         var buildService, build;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     buildService = new buildsService_1.BuildService();
-                    return [4 /*yield*/, buildService.getBuild(7)];
+                    return [4 /*yield*/, buildService.getBuilds()];
                 case 1:
                     build = _a.sent();
-                    expect(build.number).toBe(7);
-                    expect(build.version).toBe(1);
+                    expect(build.meta.number).toBe(7);
+                    expect(build.meta.version).toBe(1);
                     return [2 /*return*/];
             }
         });
