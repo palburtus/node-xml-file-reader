@@ -7,11 +7,11 @@ describe("test build service",  () => {
     let buildService:IBuildService = new BuildService();
     let build = await buildService.getBuilds();
 
-    expect(build.meta.number).toBe(7);
-    expect(build.meta.version).toBe(1);
+    expect(build[0].meta.number).toBe(7);
+    expect(build[0].meta.version).toBe(1);
 
-    expect(build.testResults.failed).toBe('209');
-    expect(build.testResults.tests).toBe('622');
+    expect(build[0].testResults.failed).toBe('209');
+    expect(build[0].testResults.tests).toBe('622');
 
   });
 

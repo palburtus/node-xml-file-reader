@@ -1,4 +1,4 @@
-import { readFile, promises as fsPromises } from 'fs';
+import { readdirSync, readFile, promises as fsPromises, PathLike } from 'fs';
 import sxml from 'sxml';
 import XML = sxml.XML;
 import XMLList = sxml.XMLList;
@@ -6,37 +6,53 @@ import { Build } from '../model/build';
 import { Meta } from '../model/meta';
 import { TestResult } from '../model/testResults';
 
+
 export interface IBuildService {
-    getBuilds() : Promise<Build>;
+    getBuilds() : Promise<Build[]>;
 }
 
 export class BuildService implements IBuildService {
     
-    public async getBuilds() : Promise<Build> {        
+    public async getBuilds() : Promise<Build[]> {        
 
-        return new Promise<Build>(async (resolve, reject) => {
-        
+        return new Promise<Build[]>((resolve, reject) => {
+           
             try{
-                
-                let meta = await this.readMetaJsonFile();
-                let testResult = await this.readTestXmlFile('app-platform-major_minor-build/tests/quick/build/mergedReports/mergedJunitReport_QuickTest.xml');
-                
-                let build: Build = {
-                    meta: meta,
-                    testResults: testResult
-                }
-        
-                resolve(build);
+                let files = readdirSync(`./${process.env.BUILDS_ROOT}`);
 
+                let builds: Promise<Build>[] = [];
+                
+                files.forEach(file => {
+                    
+                    let build = this.readTestDirectory(file);
+                    builds.push(build);
+                });
+
+                resolve(Promise.all(builds));   
+                
             }catch(ex) {
                 reject(ex);
             };
-
-            
         });        
     }
 
-    private async readTestXmlFile(path: string){
+    private async readTestDirectory(directory: string): Promise<Build>{
+        
+        return new Promise<Build>(async (resolve, reject) => {
+                      
+            let meta = await this.readMetaJsonFile(directory);
+            let testResult = await this.readTestXmlFile(`${directory}/tests/quick/build/mergedReports/mergedJunitReport_QuickTest.xml`);
+            
+            let build: Build = {
+                meta: meta,
+                testResults: testResult
+            } 
+
+            resolve(build);      
+        });
+    }
+
+    private async readTestXmlFile(path: string) : Promise<TestResult>{
 
         return new Promise<TestResult>((resolve, reject) => {
                     
@@ -49,7 +65,7 @@ export class BuildService implements IBuildService {
                 let xml:XML = new XML(data.toString());
                 //let json = xml.toJSON();
                 let xmlRootNodePropertyMap = xml.getPropertyMap();
-                debugger;
+                
                 //let testSuites: XMLList = xml.get('testsuites');
 
                 //console.log(json);
@@ -69,11 +85,11 @@ export class BuildService implements IBuildService {
             
     }
 
-    private async readMetaJsonFile() : Promise<Meta>{
+    private async readMetaJsonFile(directory: string) : Promise<Meta>{
 
         return new Promise<Meta>((resolve, reject) => {
 
-            const file = readFile(`./${process.env.BUILDS_ROOT}/app-platform-major_minor-build/meta.json`, (error, data) => {
+            const file = readFile(`./${process.env.BUILDS_ROOT}/${directory}/meta.json`, (error, data) => {
                 
                 if(error){
                     reject(error);     
