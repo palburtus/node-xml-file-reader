@@ -4,17 +4,18 @@ import {BuildService} from './services/buildsService';
 const app = express()
 const port = 3000
 
-app.get('/api/build', (req, res) => {
+require('dotenv').config()
 
-  let buildService = new BuildService();
+app.get('/api/builds', (req, res) => {
+
+  let buildService = new BuildService(`./${process.env.BUILDS_ROOT}`);
   
-  buildService.getBuilds().then((build: Build) =>{
-    res.send(`Build: ${build.meta.number}`);
+  buildService.getBuilds().then((builds: Build[]) =>{
+    res.send(builds);
   }).catch((error: any) => {
-    res.send(`Build read error: ${error}`);
+    res.send(`Fetch Builds Error: ${error}`);
   });
 
-  
 })
 
 app.listen(port, () => {

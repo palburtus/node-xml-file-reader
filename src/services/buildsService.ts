@@ -12,13 +12,20 @@ export interface IBuildService {
 }
 
 export class BuildService implements IBuildService {
+
+    buildsRootPath: string;
+
+    constructor(buildsRootPath: string){
+        this.buildsRootPath = buildsRootPath;
+    }
     
     public async getBuilds() : Promise<Build[]> {        
 
         return new Promise<Build[]>((resolve, reject) => {
            
             try{
-                let files = readdirSync(`./${process.env.BUILDS_ROOT}`);
+
+                let files = readdirSync(this.buildsRootPath);
 
                 let builds: Promise<Build>[] = [];
                 
@@ -56,21 +63,16 @@ export class BuildService implements IBuildService {
 
         return new Promise<TestResult>((resolve, reject) => {
                     
-            readFile(`./${process.env.BUILDS_ROOT}/${path}`, (error, data) => {
+            readFile(`./${this.buildsRootPath}/${path}`, (error, data) => {
                 
                 if(error){
                     reject(error);     
                 }
 
                 let xml:XML = new XML(data.toString());
-                //let json = xml.toJSON();
                 let xmlRootNodePropertyMap = xml.getPropertyMap();
                 
                 //let testSuites: XMLList = xml.get('testsuites');
-
-                //console.log(json);
-
-                //let obj = JSON.parse(json);
 
                 let testResult: TestResult = {
                     failed: xmlRootNodePropertyMap.get('failures'), 
@@ -89,7 +91,7 @@ export class BuildService implements IBuildService {
 
         return new Promise<Meta>((resolve, reject) => {
 
-            readFile(`./${process.env.BUILDS_ROOT}/${directory}/meta.json`, (error, data) => {
+            readFile(`./${this.buildsRootPath}/${directory}/meta.json`, (error, data) => {
                 
                 if(error){
                     reject(error);     
