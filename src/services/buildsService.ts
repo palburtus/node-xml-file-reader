@@ -29,7 +29,7 @@ export class BuildService implements IBuildService {
                 });
 
                 resolve(Promise.all(builds));   
-                
+
             }catch(ex) {
                 reject(ex);
             };
@@ -56,7 +56,7 @@ export class BuildService implements IBuildService {
 
         return new Promise<TestResult>((resolve, reject) => {
                     
-            const file = readFile(`./${process.env.BUILDS_ROOT}/${path}`, (error, data) => {
+            readFile(`./${process.env.BUILDS_ROOT}/${path}`, (error, data) => {
                 
                 if(error){
                     reject(error);     
@@ -89,7 +89,7 @@ export class BuildService implements IBuildService {
 
         return new Promise<Meta>((resolve, reject) => {
 
-            const file = readFile(`./${process.env.BUILDS_ROOT}/${directory}/meta.json`, (error, data) => {
+            readFile(`./${process.env.BUILDS_ROOT}/${directory}/meta.json`, (error, data) => {
                 
                 if(error){
                     reject(error);     
