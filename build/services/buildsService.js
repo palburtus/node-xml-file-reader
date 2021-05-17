@@ -35,26 +35,52 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BuildService = void 0;
 var fs_1 = require("fs");
+var sxml_1 = __importDefault(require("sxml"));
+var XML = sxml_1.default.XML;
 var BuildService = /** @class */ (function () {
-    function BuildService() {
+    function BuildService(buildsRootPath) {
+        this.buildsRootPath = buildsRootPath;
     }
     BuildService.prototype.getBuilds = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {
+                return [2 /*return*/, new Promise(function (resolve, reject) {
+                        try {
+                            var files = fs_1.readdirSync(_this.buildsRootPath);
+                            var builds_1 = [];
+                            files.forEach(function (file) {
+                                var build = _this.readTestDirectory(file);
+                                builds_1.push(build);
+                            });
+                            resolve(Promise.all(builds_1));
+                        }
+                        catch (ex) {
+                            reject(ex);
+                        }
+                        ;
+                    })];
+            });
+        });
+    };
+    BuildService.prototype.readTestDirectory = function (directory) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
                 return [2 /*return*/, new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
-                        var meta, testResult, build, ex_1;
+                        var meta, testResult, build;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
-                                case 0:
-                                    _a.trys.push([0, 3, , 4]);
-                                    return [4 /*yield*/, this.readMetaJsonFile()];
+                                case 0: return [4 /*yield*/, this.readMetaJsonFile(directory)];
                                 case 1:
                                     meta = _a.sent();
-                                    return [4 /*yield*/, this.readTestXmlFile('tests/quick/build/mergedReports/mergedJunitReport_QuickTest.xml')];
+                                    return [4 /*yield*/, this.readTestXmlFile(directory + "/tests/quick/build/mergedReports/mergedJunitReport_QuickTest.xml")];
                                 case 2:
                                     testResult = _a.sent();
                                     build = {
@@ -62,13 +88,6 @@ var BuildService = /** @class */ (function () {
                                         testResults: testResult
                                     };
                                     resolve(build);
-                                    return [3 /*break*/, 4];
-                                case 3:
-                                    ex_1 = _a.sent();
-                                    reject(ex_1);
-                                    return [3 /*break*/, 4];
-                                case 4:
-                                    ;
                                     return [2 /*return*/];
                             }
                         });
@@ -78,23 +97,32 @@ var BuildService = /** @class */ (function () {
     };
     BuildService.prototype.readTestXmlFile = function (path) {
         return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
             return __generator(this, function (_a) {
                 return [2 /*return*/, new Promise(function (resolve, reject) {
-                        var file = fs_1.readFile("./" + process.env.BUILDS_ROOT + "/" + path, function (error, data) {
+                        fs_1.readFile("./" + _this.buildsRootPath + "/" + path, function (error, data) {
                             if (error) {
                                 reject(error);
                             }
-                            var json = data.toString();
+                            var xml = new XML(data.toString());
+                            var xmlRootNodePropertyMap = xml.getPropertyMap();
+                            //let testSuites: XMLList = xml.get('testsuites');
+                            var testResult = {
+                                failed: xmlRootNodePropertyMap.get('failures'),
+                                tests: xmlRootNodePropertyMap.get('tests')
+                            };
+                            resolve(testResult);
                         });
                     })];
             });
         });
     };
-    BuildService.prototype.readMetaJsonFile = function () {
+    BuildService.prototype.readMetaJsonFile = function (directory) {
         return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
             return __generator(this, function (_a) {
                 return [2 /*return*/, new Promise(function (resolve, reject) {
-                        var file = fs_1.readFile("./" + process.env.BUILDS_ROOT + "/app-platform-major_minor-build/meta.json", function (error, data) {
+                        fs_1.readFile("./" + _this.buildsRootPath + "/" + directory + "/meta.json", function (error, data) {
                             if (error) {
                                 reject(error);
                             }

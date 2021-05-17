@@ -43,12 +43,14 @@ describe("test build service", function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    buildService = new buildsService_1.BuildService();
+                    buildService = new buildsService_1.BuildService("./" + process.env.BUILDS_ROOT);
                     return [4 /*yield*/, buildService.getBuilds()];
                 case 1:
                     build = _a.sent();
-                    expect(build.meta.number).toBe(7);
-                    expect(build.meta.version).toBe(1);
+                    expect(build[0].meta.number).toBe(7);
+                    expect(build[0].meta.version).toBe(1);
+                    expect(build[0].testResults.failed).toBe('209');
+                    expect(build[0].testResults.tests).toBe('622');
                     return [2 /*return*/];
             }
         });
