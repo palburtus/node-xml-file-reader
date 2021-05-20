@@ -12,4 +12,10 @@ The purpose of this applicaiton is to create an API to represent the current sta
 - In the .env file you must set the ```BUILDS_ROOT```
 - The file should have one line and resemble the following
 
+## Creating a Build
+- Run ```npm run build```
+- A directroy named ```builds``` will be created
+- Copy (or create a new) .env into the builds directory 
+- Run ```node server.js``` to start the server 
+
 ```BUILDS_ROOT=<PATH_CONTAINING_BUILDS_FOLDERS>``` 
