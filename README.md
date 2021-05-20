@@ -4,7 +4,7 @@ The purpose of this applicaiton is to create an API to represent the current sta
 
 ## Configuring Project
 - You must have Node.js installed on your local machine for this to work
-- After cloning the project, from the root directory run the command ```npm run install```
+- After cloning the project, from the root directory run the command ```npm install```
 - To run the API locally run the command ```npm run start``` (The API will return an error until you configure the environment file (see below)
 
 ## Configuring the Builds Folder
